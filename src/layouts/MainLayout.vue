@@ -1,23 +1,31 @@
 <template>
-  <q-layout view="hHh lpR fFf">
-    <q-header elevated class=" bg-white text q-py-sm q-px-md flex justify-around items-center " height-hint="100">
-      <div class="phone_group text-black">
-        <div class="item_tel flex items-start column">
-          <div class="flex">
-            <q-icon name="call" class="q-pr-md" size="20px"/>
-            <p>
-              8(495)111-00-07
-            </p>
+  <q-layout view="hHh lpR fff">
+    <q-header elevated class=" bg-white" height-hint="100">
+      <div class="wrapper  text q-py-sm q-px-md flex justify-between items-center ">
+        <div class="phone_group text-black">
+          <div class="item_tel flex items-start column">
+            <div class="flex">
+              <q-icon name="call" class="q-pr-md" size="20px"/>
+              <p>
+                8(495)111-00-07
+              </p>
+            </div>
+            <p class="">c 9:00 до 21:00</p>
           </div>
-          <p class="">c 9:00 до 21:00</p>
+          <div class="item_time"></div>
         </div>
-        <div class="item_time"></div>
+        <div class="">
+          <q-btn label="Обратный звонок" class="btn_recall" @click="showReCallModal = !showReCallModal"/>
+          <modal-recall :show-modal="showReCallModal">
+            <template #titleModal>
+              <h2>Обратный звонок</h2>
+            </template>
+            <template #btn>
+              <q-btn label="Заказать звонок" class="bg-red-6" color="white"/>
+            </template>
+          </modal-recall>
+        </div>
       </div>
-      <div class="">
-        <q-btn label="Обратный звонок" class="btn_recall"/>
-      </div>
-
-
     </q-header>
 
     <q-page-container>
@@ -46,21 +54,28 @@
         </div>
       </div>
     </q-footer>
-
   </q-layout>
 </template>
 
-<script>
+<script setup>
 import {defineComponent, ref} from 'vue'
+import ModalRecall from "components/modalRecall.vue";
 
 const leftDrawerOpen = ref(false)
 const toggleLeftDrawer = () => {
   leftDrawerOpen.value = !leftDrawerOpen.value
 }
 
+const showReCallModal = ref(false)
 
 </script>
-<style scoped>
+<style>
+.wrapper {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 0 16px
+}
+
 .btn_recall {
   background: red;
   color: white;

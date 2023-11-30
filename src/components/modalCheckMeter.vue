@@ -35,11 +35,5 @@ const props = defineProps({
   },
 })
 const emit = defineEmits(['changeModal'])
-
-
 </script>
 
-
-<style scoped>
-
-</style>

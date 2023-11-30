@@ -1,0 +1,119 @@
+.modalBtn {
+    gap: 10px;
+}
+
+.sendInfo {
+    background: rgb(242, 61, 48) !important;
+    color: white
+}
+.q-dialog__inner--minimized > div{
+  max-width: 100% !important;
+  background: rgb(252, 252, 252) !important;
+}
+@media (max-width: 1240px) {
+    .bg-meter {
+        background: none !important;
+        align-items: center;
+        text-align: center;
+    }
+
+    .pages_item {
+        min-width: 150px;
+    }
+
+    .pages_wrap {
+        gap: 10px;
+    }
+}
+
+@media (max-width: 650px) {
+    .adapt_screen {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .recall_input {
+        flex-direction: column;
+      gap: 15px;
+    }
+
+    .recall_number {
+        width: 100% !important;
+        justify-content: center;
+    }
+
+    .accept_policy {
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 30px !important;
+    }
+
+    .plus_company {
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .official_item,
+    .item_fast,
+    .item_Available,
+    .item_text {
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .pages_title {
+        text-align: center !important;
+    }
+
+    .yandex-rating {
+        max-width: 120px !important;
+        padding-left: 10px !important;
+    }
+
+    .modalBtn {
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .footer {
+        justify-content: start !important;
+        padding-left: 10px;
+    }
+
+    .logo_is {
+        max-width: 150px !important;
+    }
+
+    .header_wrap {
+        justify-content: center !important;
+        align-items: center !important;
+    }
+
+    .text_pol > h2 {
+        font-size: 20px !important;
+    }
+
+    .policy-title {
+        font-size: 25px !important;
+        text-align: center !important;
+    }
+
+    .modalReCall_title {
+        font-size: 30px !important;
+        text-align: center !important;
+    }
+
+    .modalCall_wrap {
+        justify-content: center !important;
+        gap: 15px !important;
+        align-items: center !important;
+    }
+
+    .policyModal-text {
+        padding-top: 10px;
+    }
+
+}

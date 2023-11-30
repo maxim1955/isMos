@@ -2,10 +2,10 @@
   <q-dialog :model-value="checkToggle" @hide="emit('close_policy',false)">
     <q-card style="min-width:80%">
       <q-card-section>
-        <div class="text-h2">Политика конфиденциальности</div>
+        <div class="text-h2 policy-title">Политика конфиденциальности</div>
       </q-card-section>
       <q-separator/>
-      <q-card-section class="scroll">
+      <q-card-section class="scroll text_pol">
         <h2>1. Общие положения</h2>
         <p>1.1. Данный документы является официальным публичным предложением Общества с ограниченной ответственностью
           «ИНЖЕНЕРНАЯ СЛУЖБА», в лице Генерального директора Мурашова Александра Александровича, действующего на

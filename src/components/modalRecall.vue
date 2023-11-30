@@ -1,40 +1,43 @@
 <template>
+
   <q-dialog
       :model-value="showModal"
-      full-width
   >
-    <q-card class="column">
-      <slot name="titleModal"></slot>
+
+  <q-card class="column q-px-md">
+      <slot name="titleModal" class="modalReCall_title q-mx-xl"></slot>
       <q-card-section>
         <div class="wrapper">
-          <div class="flex items-center q-pt-lg">
-            <div class="recall_input flex ">
-              <q-input
-                  name="phone"
+          <div class="flex items-center q-pt-lg modalCall_wrap justify-center">
+            <div class="recall_input flex">
+              <form @submit="sendFormToCall" class="recall_input flex  "  >
+                <q-input
                   type="text"
                   class="q-pr-sm"
                   label="Ваше имя *"
-                  clearable
                   v-model="form_name"
-              />
-              <q-input
-                  name="phone"
+                  @input="form_name"
+                  name="name"
+                />
+                <q-input
                   type="tel"
-                  mask="+7 (###) ### - ## - ##"
+                  mask="+7 (###)###-##-##"
                   label="Ваше номер *"
-                  clearable
                   v-model="form_phone"
-              />
+                  @input="form_phone"
+                  name="phone"
+                />
+              </form>
             </div>
-            <div class="sendInfo q-pl-lg">
-              <slot name="btn">
-
-              </slot>
+            <div class="q-py-lg q-px-xl-xl q-px-sm-none">
+              <q-btn class="bg-red-6 " color="white" @click="emit('reCallback',info)" :disable="!form_name.length || !form_phone.length">
+                <slot name="btn" class="sendInfo"></slot>
+              </q-btn>
             </div>
           </div>
-          <div class="accept_policy flex">
+          <div class="accept_policy flex justify-center">
             <div class="">
-              <p>
+              <p class="policyModal-text text-center q-pt-sm">
                 Отправляя форму, я даю свое согласие на обработку
                 <span style="text-decoration: underline; cursor: pointer ; color: blue"
                       @click="check_toggle = !check_toggle">
@@ -57,6 +60,10 @@
 <script setup>
 import {ref} from "vue";
 import Modal_policy from "components/modal_policy.vue";
+import axios from "axios";
+import {useQuasar} from "quasar";
+const $q = useQuasar()
+
 
 const props = defineProps({
   showModal: {
@@ -64,13 +71,41 @@ const props = defineProps({
     required: true
   }
 })
-const check_toggle = ref(false);
-const form_phone = ref("");
-const form_name = ref(String());
+let check_toggle = ref(false);
+let form_phone = ref('');
+const form_name = ref('');
+const info = {
+  name: form_name,
+  phone: form_phone,
+};
+const emit = defineEmits(['reCallback'])
+const sendFormToCall =  async (data) => {
+  try {
+    $q.loading.show({
+      message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
+      html: true
+    })
+    let res = await axios.post("http://stm/telegramRequest.php", {
+        title: 'Обртный звонок',
+         id: 1,
+        name: data.name.value,
+        phone: data.phone.value
+      }
+    )
+    if(res.status === 200){
+      console.log('OK')
+      $q.loading.hide()
+
+    }else {
+      console.log('Error')
+      alert('ERROR')
+    }
+    emit('reCallback',false)
+    form_name.value = ''
+    form_phone.value = ''
+  } catch (e) {
+    console.log(e)
+  }
+}
 </script>
 
-
-<style scoped>
-.recall_input {
-}
-</style>

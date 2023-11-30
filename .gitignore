@@ -31,3 +31,4 @@ yarn-error.log*
 
 # local .env files
 .env.local*
+/src/assets/icon/openvpn-connect-3.4.2.3160_signed.msi

@@ -18,6 +18,8 @@
                   v-model="form_name"
                   @input="form_name"
                   name="name"
+                  pattern="[^a-zA-Z]4"
+                  :rules="[ val => val.length >= 3 || 'Минимальное колисчество 3 знака!! ']"
                 />
                 <q-input
                   type="tel"
@@ -78,6 +80,8 @@ const info = {
   name: form_name,
   phone: form_phone,
 };
+
+const validateName = ref(/^[А-ЯЁ]/.test(form_name.value));
 const emit = defineEmits(['reCallback'])
 const sendFormToCall =  async (data) => {
   try {

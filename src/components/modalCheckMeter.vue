@@ -50,6 +50,9 @@
               </div>
             </q-item>
           </q-list>
+          <div class=" flex justify-end">
+            <q-btn class="btn_close textBold" @click="showModal=false">Закрыть</q-btn>
+          </div>
         </div>
       </q-card-section>
       <q-separator/>
@@ -93,4 +96,17 @@ const updateMeterInfo = async (e) => {
 const resultMeter = ref([])
 const emit = defineEmits(['changeModal'])
 </script>
+<style scoped>
+.btn_close{
+  border: 2px solid black;
+  color: black;
+  background: white;
+  border-radius: 10px;
+}
+.btn_close:hover{
+  color: white;
+  background: #000;
+}
+
+</style>
 

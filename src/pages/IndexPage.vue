@@ -16,7 +16,6 @@
               </span>
       </template>
     </modal-recall>
-
     <div class="blue_bg q-pt-lg">
       <section class="q-pt-lg  flex justify-between wrapper">
         <q-img src="~src/assets/icon/logo.svg" style="max-height: 50px; max-width: 190px;" loading="lazy"
@@ -53,8 +52,21 @@
             </div>
             <p style="font-size: 30px; max-width: 420px" class="text-white">
               При заказе через сайт <br>
-              цена - <span class="" style="color: #ffff00">500 рублей</span> за 1 прибор
+              цена - <span style="color: #ffff00">500 рублей</span> за 1 прибор
             </p>
+            <p style="font-size: 16px; max-width: 420px" class="text-white">До конца акции осталось:</p>
+            <Countdown
+              class="flex justify-start items-start"
+              style="width: 100%;"
+              :mainColor="'#ffffff'"
+              :showLabels="true"
+              :secondFlipColor="'#ffffff'"
+              :deadline="nextdate"
+              :secondFlipBackgroundColor="'#333232'"
+              :mainFlipBackgroundColor="'#333232FF'"
+              :labels="labelForTimer"
+              :countdownSize="'2rem'"
+            />
           </div>
         </div>
       </section>
@@ -128,6 +140,7 @@
 </template>
 
 <script setup>
+import {Countdown} from 'vue3-flip-countdown'
 import ReCall from "components/reCall.vue";
 import Modal_contactMap from "components/modal_contactMap.vue";
 import {ref} from "vue";
@@ -138,8 +151,6 @@ import instance from "app/server/instance";
 import axios from "axios";
 import {useQuasar} from "quasar";
 const $q = useQuasar()
-
-
 const showMap = ref(false);
 const showRecallModal = ref(false);
 const showSearchResultModal = ref(false);
@@ -157,9 +168,14 @@ const districtMoscow = [
   {name: "ЮВАО", code: "moscow"},
   {name: "ЮЗАО", code: "moscow"},
 ]
+const labelForTimer= {
+  days: 'Дней',hours: 'Часов',minutes: 'Минут',seconds: 'Секунд'
+
+}
+const nextdate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getUTCDay()+6}`
+
 const openPolicy = ref(false);
 const sendFormToOrder = async (data) => {
-
   try {
     $q.loading.show({
       message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
@@ -222,6 +238,8 @@ button {
   font-size: 15px;
   font-weight: bold;
   color: white;
+  margin-bottom: 3%;
+
 }
 
 .btn_search_result:hover {
@@ -243,8 +261,8 @@ button {
   color: white;
 }
 
-.test_result {
-  padding: 70px 0;
+.flip-clock__slot{
+  color: #6780b2!important;
 }
 
 

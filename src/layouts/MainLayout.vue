@@ -14,10 +14,10 @@
         <div class="phone_group text-black">
           <div class="item_tel flex items-start column">
             <div class="flex q-pt-md">
-              <q-icon name="call" class="q-pr-md " size="20px"/>
-              <p class="textRegular" style="font-size: 16px;">
+              <q-icon name="call" class="q-pr-md  " size="20px"/>
+              <a href="tel: 8(495)111-00-07" style="font-size: 16px; color: black" class="textRegular">
                 8(495)111-00-07
-              </p>
+              </a>
             </div>
             <p class="textRegular" style="font-size: 12px;">c 9:00 до 21:00</p>
           </div>
@@ -26,7 +26,6 @@
         <div class="">
           <q-btn label="Обратный звонок" class="btn_recall textRegular" @click="showReCallModal = !showReCallModal"
                  style="font-size: 14px;"/>
-
         </div>
       </div>
     </q-header>
@@ -80,6 +79,7 @@ const $q = useQuasar()
 */
 const sendFormToCall = async (data) => {
     try {
+
       $q.loading.show({
         message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
         html: true

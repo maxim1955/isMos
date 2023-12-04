@@ -30,9 +30,15 @@
       <div class="flex column items-center textRegular justify-center recall_number" style="width: 48%">
         <div class=" flex justify center q-pt-ms recall_number">
           <q-icon name="call" class="q-pr-md" size="24px"/>
-          <p style="font-size: 28px; padding: 0; margin: 0;">
-            8(495)111-00-07
-          </p>
+           <transition  name="bounce" enter-active-class="animate__animated animate__tada"
+                       leave-active-class="animate__animated animate__bounceOutRight">
+             
+             <a href="tel: 8(495)111-00-07" style="font-size: 28px; padding: 0; margin: 0; color: black; text-decoration: none; "  >
+               8(495)111-00-07
+             </a>
+           </transition>
+
+
         </div>
         <p style="font-size: 18px; padding: 0; margin: 0;">Бесплатная консультация</p>
       </div>

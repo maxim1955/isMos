@@ -13,6 +13,7 @@
             label="Ваше имя *"
             v-model="form_name"
             style="color: #868686"
+            :rules="[ (val,rules) => val.length >= 3 || 'Минимальное количество 3 знака!!', (val,rules) => regexpName.test(form_name) || 'Ввод только кириллица']"
         />
         <q-input
             name="phone"
@@ -32,7 +33,7 @@
           <q-icon name="call" class="q-pr-md" size="24px"/>
            <transition  name="bounce" enter-active-class="animate__animated animate__tada"
                        leave-active-class="animate__animated animate__bounceOutRight">
-             
+
              <a href="tel: 8(495)111-00-07" style="font-size: 28px; padding: 0; margin: 0; color: black; text-decoration: none; "  >
                8(495)111-00-07
              </a>
@@ -56,7 +57,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 
@@ -64,7 +64,7 @@
 <script setup>
 import {ref} from "vue";
 import Modal_policy from "components/modal_policy.vue";
-
+const regexpName = /^[а-яА-ЯёЁ\s]/;
 const emit = defineEmits(['sendFormToOrder'])
 const check_toggle = ref(false);
 const form_phone = ref("");

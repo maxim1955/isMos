@@ -86,7 +86,6 @@ const regexpName = /^[?!,.а-яА-ЯёЁ\s]/;
 const emit = defineEmits(['reCallback'])
 const sendFormToCall =  async (data) => {
   try {
-
       $q.loading.show({
         message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
         html: true
@@ -100,14 +99,14 @@ const sendFormToCall =  async (data) => {
       if(res.status === 200){
         console.log('OK')
         $q.loading.hide()
-
+        form_name.value = ''
+        form_phone.value = ''
       }else {
         console.log('Error')
         alert('ERROR')
       }
+
       emit('reCallback',false)
-      form_name.value = ''
-      form_phone.value = ''
   } catch (e) {
     console.log(e)
   }

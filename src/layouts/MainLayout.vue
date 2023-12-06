@@ -1,4 +1,5 @@
-<template>
+<template @mousemove="quitWindow">
+  <v-modal_quit :show-modal="quitModal" v-if="quitModal === true" @hideModal="closeQuitModal"/>
   <modal-recall :show-modal="showReCallModal" @reCallback="sendFormToCall" @hide="showReCallModal = false">
     <template #titleModal>
       <h2 class="modalReCall_title text-center">Обратный звонок</h2>
@@ -8,7 +9,7 @@
     </template>
   </modal-recall>
   <modal_policy :check-toggle="openPolicy"/>
-  <q-layout view="hHh lpR fff">
+  <q-layout view="hHh lpR fff" >
     <q-header elevated class=" bg-white" height-hint="100">
       <div class="wrapper  text q-py-sm q-px-md flex justify-between items-center header_wrap ">
         <div class="phone_group text-black">
@@ -73,21 +74,28 @@ import Modal_policy from "components/modal_policy.vue";
 import instance from "app/server/instance";
 import axios from "axios";
 import {useQuasar} from "quasar";
+import VModal_quit from "components/v-modal_quit.vue";
 const $q = useQuasar()
+
 /* Модальные окна */
 const openPolicy = ref(false)
 const showReCallModal = ref(false)
+const quitModal = ref(false)
 
+
+
+/*-----------------Функция получения последнего ID  -----------------------------*/
 let lastId
-/*-----------------Функция получения  -----------------------------*/
+let count
 const getLastId = async ()=>{
   let next_id = await axios.get('http://stm/getinfo.php')
   console.log(next_id)
   let id = next_id.data
   lastId = id.split(' ')[1]
-  lastId++
+  let count = lastId++
   console.log(lastId)
 }
+
 /* ---------------- Отправка формы на обратный звонок ----------------------------*/
 const sendFormToCall = async (data) => {
     try {
@@ -98,13 +106,14 @@ const sendFormToCall = async (data) => {
       getLastId()
       let result = JSON.stringify({
         title: 'Обратный звонок',
-        id: lastId,
+        id: count,
         name: data.name.value,
         phone: data.phone.value,
       })
 
       let res = await axios.post("http://stm/telegramRequest.php", result)
       if(res.status === 200){
+        document.cookie = "Call=true ; path=/ ; max-age=86400"
         let seconds = 3
         $q.loading.hide()
         showReCallModal.value = false
@@ -130,6 +139,22 @@ const sendFormToCall = async (data) => {
 }
 
 
+/* -------------------------------------- Функция отслеживания  ухода пользователя ----------------------------------*/
+
+const quitWindow = () =>{
+  //Проверяем наличие куки....
+  const getCookie = document.cookie
+  let cookie = getCookie.split('=')
+  if(cookie.includes('Call')){
+    console.log('OK')
+    closeQuitModal()
+  }else
+    console.log('NO')
+    quitModal.value =true
+}
+let closeQuitModal = ()=>{
+  quitModal.value = false
+}
 </script>
 <style>
 

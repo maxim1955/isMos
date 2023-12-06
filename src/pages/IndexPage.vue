@@ -1,10 +1,20 @@
-<template>
-  <q-page>
-    <ModalCheckMeter :show-modal="showSearchResultModal"
-                     @hide="showSearchResultModal = false"></ModalCheckMeter>
-    <modal_contact-map :open-map="showMap" @hide="showMap = false"/>
-
-    <modal-recall  :show-modal="showRecallModal" @reCallback="sendFormToOrder" @hide="showRecallModal=false" class="text-center" style="margin: 0 auto;">
+<template >
+  <q-page >
+    <ModalCheckMeter
+      :show-modal="showSearchResultModal"
+      @hide="showSearchResultModal = false"
+    />
+    <modal_contact-map
+      :open-map="showMap"
+      @hide="showMap = false"
+    />
+    <modal-recall
+      :show-modal="showRecallModal"
+      @reCallback="sendFormToOrder"
+      @hide="showRecallModal=false"
+      class="text-center"
+      style="margin: 0 auto;"
+    >
       <template #titleModal>
         <h2 class="modalReCall_title text-center">
           Заказать со скидкой
@@ -150,10 +160,8 @@ import Modal_policy from "components/modal_policy.vue";
 import instance from "app/server/instance";
 import axios from "axios";
 import {useQuasar} from "quasar";
+import VModal_quit from "components/v-modal_quit.vue";
 const $q = useQuasar()
-const showMap = ref(false);
-const showRecallModal = ref(false);
-const showSearchResultModal = ref(false);
 const districtMoscow = [
   {name: "ВАО", code: "moscow"},
   {name: "ЗАО", code: "moscow"},
@@ -168,13 +176,37 @@ const districtMoscow = [
   {name: "ЮВАО", code: "moscow"},
   {name: "ЮЗАО", code: "moscow"},
 ]
+
+
+
+/* ----------------------------------- Переменные для открытия модальных окон ----------------------------------------*/
+
+const openPolicy = ref(false);
+const quitModal = ref(false)
+const showRecallModal = ref(false);
+const showSearchResultModal = ref(false);
+const showMap = ref(false);
+
+/*------------------------------------------- Таймер до окончания акции ----------------------------------------------*/
+
 const labelForTimer= {
   days: 'Дней',hours: 'Часов',minutes: 'Минут',seconds: 'Секунд'
-
 }
 const nextdate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getUTCDay()+6}`
 
-const openPolicy = ref(false);
+
+/*----------------------------------------- Функция получения последней заявки  --------------------------------------*/
+
+let lastId
+const getLastId = async ()=>{
+  let next_id = await axios.get('http://stm/getinfo.php')
+  let id = next_id.data
+  lastId =  id.split(' ')[1]
+  lastId++
+  console.log(lastId)
+}
+
+/*  ------------------------------------- Функция отправки завяки на ПОВЕРКУ ----------------------------------------*/
 const sendFormToOrder = async (data) => {
   try {
     $q.loading.show({
@@ -187,6 +219,7 @@ const sendFormToOrder = async (data) => {
         name: data.name.value,
         phone: data.phone.value,
       })
+    getLastId()
       let res = await axios.post("http://stm/telegramRequest.php", result)
     if(res.status === 200){
       console.log('OK')

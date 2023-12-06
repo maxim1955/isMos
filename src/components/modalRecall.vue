@@ -18,8 +18,8 @@
                   v-model="form_name"
                   @input="form_name"
                   name="name"
-                  pattern="[^a-zA-Z]4"
-                  :rules="[ val => val.length >= 3 || 'Минимальное колисчество 3 знака!! ']"
+
+                  :rules="[ (val,rules) => val.length >= 3 || 'Минимальное количество 3 знака!!', (val,rules) => regexpName.test(form_name) || 'Ввод только кириллица']"
                 />
                 <q-input
                   type="tel"
@@ -81,32 +81,33 @@ const info = {
   phone: form_phone,
 };
 
-const validateName = ref(/^[А-ЯЁ]/.test(form_name.value));
+const regexpName = /^[?!,.а-яА-ЯёЁ\s]/;
+
 const emit = defineEmits(['reCallback'])
 const sendFormToCall =  async (data) => {
   try {
-    $q.loading.show({
-      message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
-      html: true
-    })
-    let res = await axios.post("http://stm/telegramRequest.php", {
-        title: 'Обртный звонок',
-         id: 1,
-        name: data.name.value,
-        phone: data.phone.value
-      }
-    )
-    if(res.status === 200){
-      console.log('OK')
-      $q.loading.hide()
 
-    }else {
-      console.log('Error')
-      alert('ERROR')
-    }
-    emit('reCallback',false)
-    form_name.value = ''
-    form_phone.value = ''
+      $q.loading.show({
+        message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
+        html: true
+      })
+      let res = await axios.post("http://stm/telegramRequest.php", {
+          title: 'Обртный звонок',
+          id: 1,
+          name: data.name.value,
+          phone: data.phone.value
+        })
+      if(res.status === 200){
+        console.log('OK')
+        $q.loading.hide()
+
+      }else {
+        console.log('Error')
+        alert('ERROR')
+      }
+      emit('reCallback',false)
+      form_name.value = ''
+      form_phone.value = ''
   } catch (e) {
     console.log(e)
   }

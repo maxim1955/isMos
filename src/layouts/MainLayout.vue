@@ -74,40 +74,61 @@ import instance from "app/server/instance";
 import axios from "axios";
 import {useQuasar} from "quasar";
 const $q = useQuasar()
-/*
-Отправка формы на обратный звонок
-*/
+/* Модальные окна */
+const openPolicy = ref(false)
+const showReCallModal = ref(false)
+
+let lastId
+/*-----------------Функция получения  -----------------------------*/
+const getLastId = async ()=>{
+  let next_id = await axios.get('http://stm/getinfo.php')
+  console.log(next_id)
+  let id = next_id.data
+  lastId = id.split(' ')[1]
+  lastId++
+  console.log(lastId)
+}
+/* ---------------- Отправка формы на обратный звонок ----------------------------*/
 const sendFormToCall = async (data) => {
     try {
-
       $q.loading.show({
         message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
         html: true
       })
+      getLastId()
       let result = JSON.stringify({
         title: 'Обратный звонок',
-        id: 1,
+        id: lastId,
         name: data.name.value,
         phone: data.phone.value,
       })
-    let res = await axios.post("http://stm/telegramRequest.php", result)
-    console.log(res)
+
+      let res = await axios.post("http://stm/telegramRequest.php", result)
       if(res.status === 200){
-        console.log('OK')
+        let seconds = 3
         $q.loading.hide()
         showReCallModal.value = false
-      }else {
+        const dialog = $q.dialog({
+          title: 'Alert',
+          message: `Ваша заявка принята, ожидайте звонка! `,
+          position: 'bottom'
+        })
+        const timer = setInterval(() => {
+          seconds--
+          if (seconds > 0) {}
+          else {
+            clearInterval(timer)
+            dialog.hide()
+          }
+        }, 1000)
+      } else {
         console.log('Error')
-        alert('ERROR')
       }
   } catch (e) {
     console.log(e)
   }
 }
 
-
-const openPolicy = ref(false)
-const showReCallModal = ref(false)
 
 </script>
 <style>

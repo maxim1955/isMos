@@ -1,5 +1,5 @@
-<template @mousemove="quitWindow">
-  <v-modal_quit :show-modal="quitModal" v-if="quitModal === true" @hideModal="closeQuitModal"/>
+<template >
+  <v-modal_quit :show-modal="quitModal" v-if="quitModal" @hideModal="closeQuitModal"/>
   <modal-recall :show-modal="showReCallModal" @reCallback="sendFormToCall" @hide="showReCallModal = false">
     <template #titleModal>
       <h2 class="modalReCall_title text-center">Обратный звонок</h2>
@@ -9,7 +9,7 @@
     </template>
   </modal-recall>
   <modal_policy :check-toggle="openPolicy"/>
-  <q-layout view="hHh lpR fff" >
+  <q-layout view="hHh lpR fff" @mousemove="checkCoordinates($event)">
     <q-header elevated class=" bg-white" height-hint="100">
       <div class="wrapper  text q-py-sm q-px-md flex justify-between items-center header_wrap ">
         <div class="phone_group text-black">
@@ -26,7 +26,8 @@
         </div>
         <div class="">
           <q-btn label="Обратный звонок" class="btn_recall textRegular" @click="showReCallModal = !showReCallModal"
-                 style="font-size: 14px;"/>
+                 style="font-size: 14px;"
+          />
         </div>
       </div>
     </q-header>
@@ -76,13 +77,12 @@ import axios from "axios";
 import {useQuasar} from "quasar";
 import VModal_quit from "components/v-modal_quit.vue";
 const $q = useQuasar()
+import $ from "jquery";
 
 /* Модальные окна */
 const openPolicy = ref(false)
 const showReCallModal = ref(false)
 const quitModal = ref(false)
-
-
 
 /*-----------------Функция получения последнего ID  -----------------------------*/
 let lastId
@@ -140,8 +140,13 @@ const sendFormToCall = async (data) => {
 
 
 /* -------------------------------------- Функция отслеживания  ухода пользователя ----------------------------------*/
+const checkCoordinates = (event)=>{
+  if(event.clientY<20){
+    quitWindow()
+  }
+}
 
-const quitWindow = () =>{
+const quitWindow = (val) =>{
   //Проверяем наличие куки....
   const getCookie = document.cookie
   let cookie = getCookie.split('=')
@@ -150,7 +155,7 @@ const quitWindow = () =>{
     closeQuitModal()
   }else
     console.log('NO')
-    quitModal.value =true
+    quitModal.value = true
 }
 let closeQuitModal = ()=>{
   quitModal.value = false

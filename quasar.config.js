@@ -58,9 +58,7 @@ module.exports = configure(function (/* ctx */) {
 
             // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
-          publicPath: process.env.NODE_ENV === 'production'
-            ? '/isMos/'
-            : '/',
+          publicPath: '/isMos/',
             // analyze: true,
             // env: {},
             // rawDefine: {}
@@ -68,11 +66,8 @@ module.exports = configure(function (/* ctx */) {
             // minify: false,
             // polyfillModulePreload: true,
             // distDir
-
             // extendViteConf (viteConf) {},
             // viteVuePluginOptions: {},
-
-
             // vitePlugins: [
             //   [ 'package-name', { ..options.. } ]
             // ]
@@ -80,15 +75,13 @@ module.exports = configure(function (/* ctx */) {
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
         devServer: {
-            // https: true
+           https: true,
             open: false // opens browser window automatically
         },
 
         // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
         framework: {
-            config: {
-
-            },
+            config: {},
 
             // iconSet: 'material-icons', // Quasar icon set
             // lang: 'en-US', // Quasar language pack

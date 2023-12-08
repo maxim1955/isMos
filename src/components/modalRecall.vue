@@ -1,10 +1,8 @@
 <template>
-
   <q-dialog
       :model-value="showModal"
   >
-
-  <q-card class="column q-px-md">
+  <q-card class="column q-px-md modal_wrap">
       <slot name="titleModal" class="modalReCall_title q-mx-xl"></slot>
       <q-card-section>
         <div class="wrapper">
@@ -18,7 +16,6 @@
                   v-model="form_name"
                   @input="form_name"
                   name="name"
-
                   :rules="[ (val,rules) => val.length >= 3 || 'Минимальное количество 3 знака!!', (val,rules) => regexpName.test(form_name) || 'Ввод только кириллица']"
                 />
                 <q-input
@@ -74,7 +71,7 @@ const props = defineProps({
   }
 })
 let check_toggle = ref(false);
-let form_phone = ref('');
+const form_phone = ref('');
 const form_name = ref('');
 const info = {
   name: form_name,

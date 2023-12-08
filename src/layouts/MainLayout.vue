@@ -1,5 +1,5 @@
 <template >
-  <v-modal_quit :show-modal="quitModal" v-if="quitModal" @hideModal="closeQuitModal"/>
+  <v-modal_quit :showModal="openExitModal" v-if="openExitModal" @hideModal="openExitModal = false" v-model="quitModal"/>
   <modal-recall :show-modal="showReCallModal" @reCallback="sendFormToCall" @hide="showReCallModal = false">
     <template #titleModal>
       <h2 class="modalReCall_title text-center">Обратный звонок</h2>
@@ -82,18 +82,17 @@ import $ from "jquery";
 /* Модальные окна */
 const openPolicy = ref(false)
 const showReCallModal = ref(false)
-const quitModal = ref(false)
+let quitModal = ref(false)
+let openExitModal = ref(false)
 
 /*-----------------Функция получения последнего ID  -----------------------------*/
 let lastId
 let count
 const getLastId = async ()=>{
-  let next_id = await axios.get('http://stm/getinfo.php')
-  console.log(next_id)
-  let id = next_id.data
-  lastId = id.split(' ')[1]
-  let count = lastId++
-  console.log(lastId)
+  let next_id = await axios.get('https://sale.ismos.isp.sprint.1t.ru/assets/getInfo.php')
+  let id = await next_id.data
+  lastId = await id.split('}')
+  count = lastId.length-1
 }
 
 /* ---------------- Отправка формы на обратный звонок ----------------------------*/
@@ -103,7 +102,7 @@ const sendFormToCall = async (data) => {
         message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
         html: true
       })
-      getLastId()
+     await getLastId()
       let result = JSON.stringify({
         title: 'Обратный звонок',
         id: count,
@@ -111,7 +110,7 @@ const sendFormToCall = async (data) => {
         phone: data.phone.value,
       })
 
-      let res = await axios.post("http://stm/telegramRequest.php", result)
+      let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", result)
       if(res.status === 200){
         document.cookie = "Call=true ; path=/ ; max-age=86400"
         let seconds = 3
@@ -141,8 +140,10 @@ const sendFormToCall = async (data) => {
 
 /* -------------------------------------- Функция отслеживания  ухода пользователя ----------------------------------*/
 const checkCoordinates = (event)=>{
-  if(event.clientY<20){
+  if(event.clientY <= 0){
     quitWindow()
+  }else {
+    return
   }
 }
 
@@ -150,15 +151,16 @@ const quitWindow = (val) =>{
   //Проверяем наличие куки....
   const getCookie = document.cookie
   let cookie = getCookie.split('=')
-  if(cookie.includes('Call')){
-    console.log('OK')
-    closeQuitModal()
-  }else
-    console.log('NO')
+  if(!cookie.includes('Call')){
+    console.log('ДОЛЖНА ОТКРЫТЬСЯ МОДАЛКА')
     quitModal.value = true
+    openExitModal.value =true
+  }else
+    console.log('КУКИ ЕСТЬ!!!!')
+    closeQuitModal()
 }
 let closeQuitModal = ()=>{
-  quitModal.value = false
+  openExitModal.value
 }
 </script>
 <style>

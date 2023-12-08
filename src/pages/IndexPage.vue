@@ -50,24 +50,24 @@
             </div>
             <div class="textRegular">
               <ul>
-                <li style="font-size: 18px" class="text-white textRegular q-pb-sm">Госаккредитация <span> <a
+                <li style="font-size: 18px" class="text-white textRegular q-pb-sm text-left">Госаккредитация <span> <a
                     target="_blank"
                     class="text-white"
                     href="https://poverka.fsa.gov.ru/?arrFilter_ff%5BNAME%5D=%D0%B8%D0%BD%D0%B6%D0%B5%D0%BD%D0%B5%D1%80%D0%BD%D0%B0%D1%8F+%D1%81%D0%BB%D1%83%D0%B6%D0%B1%D0%B0&arrFilter_pf%5BREGISTRY_NUMBER_TEXT%5D=&arrFilter_pf%5BINN%5D=&arrFilter_pf%5BADDRESS%5D=%D0%BC%D0%BE%D1%81%D0%BA%D0%B2%D0%B0&set_filter=%D0%9F%D0%BE%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D1%8C&set_filter=Y">№ RA.RU.314330</a> </span>
                 </li>
-                <li style="font-size: 18px" class="text-white textRegular q-pb-sm">Методика поверки «МИ 1592-2015»</li>
-                <li style="font-size: 18px" class="text-white textRegular">Внесение результатов в ФГИС «Аршин» при Вас
+                <li style="font-size: 18px" class="text-white textRegular q-pb-sm text-left">Методика поверки «МИ 1592-2015»</li>
+                <li style="font-size: 18px" class="text-white textRegular text-left">Внесение результатов в ФГИС «Аршин» при Вас
                 </li>
               </ul>
             </div>
-            <p style="font-size: 30px; max-width: 420px" class="text-white">
+            <p style="font-size: 30px; max-width: 420px" class="text-white rubikLight">
               При заказе через сайт <br>
               цена - <span style="color: #ffff00">500 рублей</span> за 1 прибор
             </p>
-            <p style="font-size: 16px; max-width: 420px" class="text-white">До конца акции осталось:</p>
+            <p style="font-size: 16px; max-width: 420px" class="text-white rubikLight">До конца акции осталось:</p>
             <Countdown
-              class="flex justify-start items-start"
-              style="width: 100%;"
+              class="flex justify-start items-start rubikLight"
+              style="width: 100%; font-family: RubikLight,serif"
               :mainColor="'#ffffff'"
               :showLabels="true"
               :secondFlipColor="'#ffffff'"
@@ -89,7 +89,7 @@
             <q-img src="src/assets/icon/official.webp" width="70px" height="70px" class="q-px-lg" loading="lazy"/>
             <div class="item_text flex column q-pl-lg">
               <p class="item_title textBold" style="font-size: 24px;">Официально</p>
-              <p class="textRegular">ГОС Аккредитация, показания передаются во ФГИС "АРШИН"</p>
+              <p class="textRegular ">ГОС Аккредитация, показания передаются во ФГИС "АРШИН"</p>
             </div>
           </div>
           <div class="item_fast flex q-pl-lg">
@@ -100,9 +100,14 @@
             </div>
           </div>
           <div class="item_Available flex q-pl-lg">
-            <q-img src="src/assets/icon/official.webp" width="70px" height="70px" class="q-px-lg" loading="lazy"/>
+            <q-img
+              src="src/assets/icon/official.webp"
+                   width="70px"
+                   height="70px"
+                   class="q-px-lg"
+                   loading="lazy"/>
             <div class="item_text flex column q-pl-lg">
-              <p class="item_title textBold" style="font-size: 24px;">Доступно</p>
+              <p class="item_title textBold"  style="font-size: 24px;">Доступно</p>
               <p class="textRegular" style="font-size: 16px;">Социально ориентированная компания, льготные цены</p>
             </div>
           </div>
@@ -116,7 +121,7 @@
             <div class="q-pb-lg flex justify-center wrap pages_item"
                  v-for="dist of districtMoscow"
                  style=" width: 16.6%">
-              <q-btn class="dist_btn" style="width: 100%; max-width: 150px">{{ dist.name }}</q-btn>
+              <q-btn class="dist_btn rubikLight " style="width: 100%; max-width: 150px">{{ dist.name }}</q-btn>
             </div>
           </div>
           <h4 class="textBold" style="font-size: 20px;">Так же работаем в городах Московской области: Балашиха, Люберцы,
@@ -139,7 +144,7 @@
       <section>
         <div class="test_result flex justify-center column items-center">
           <h2 class="text-center textBold text-white" style="font-size: 30px;">Уже сделали поверку?</h2>
-          <button class="btn_search_result" @click="showSearchResultModal = !showSearchResultModal">
+          <button class="btn_search_result rubikLight" @click="showSearchResultModal = !showSearchResultModal">
             Проверить результат
             <i class="fa-solid fa-magnifying-glass q-pl-sm"></i>
           </button>
@@ -162,6 +167,7 @@ import axios from "axios";
 import {useQuasar} from "quasar";
 import VModal_quit from "components/v-modal_quit.vue";
 const $q = useQuasar()
+let count
 const districtMoscow = [
   {name: "ВАО", code: "moscow"},
   {name: "ЗАО", code: "moscow"},
@@ -199,11 +205,11 @@ const nextdate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new D
 
 let lastId
 const getLastId = async ()=>{
-  let next_id = await axios.get('http://stm/getinfo.php')
-  let id = next_id.data
-  lastId =  id.split(' ')[1]
-  lastId++
-  console.log(lastId)
+  let next_id = await axios.get('https://sale.ismos.isp.sprint.1t.ru/assets/getInfo.php')
+  let id = await next_id.data
+  lastId = await id.split('}')
+  count = lastId.length-1
+  console.log(count)
 }
 
 /*  ------------------------------------- Функция отправки завяки на ПОВЕРКУ ----------------------------------------*/
@@ -213,14 +219,15 @@ const sendFormToOrder = async (data) => {
       message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
       html: true
     })
+    await getLastId()
       let result = JSON.stringify({
         title: 'Заявка на поверку!',
-        id: 1,
+        id: count,
         name: data.name.value,
         phone: data.phone.value,
       })
     getLastId()
-      let res = await axios.post("http://stm/telegramRequest.php", result)
+      let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", result)
     if(res.status === 200){
       console.log('OK')
       $q.loading.hide()

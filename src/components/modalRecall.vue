@@ -87,7 +87,7 @@ const sendFormToCall =  async (data) => {
         message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
         html: true
       })
-      let res = await axios.post("http://stm/telegramRequest.php", {
+      let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", {
           title: 'Обртный звонок',
           id: 1,
           name: data.name.value,

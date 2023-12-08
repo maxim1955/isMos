@@ -9,66 +9,6 @@
       </template>
     </modal-recall>
   </div>
-
-<!--  <q-dialog-->
-<!--    :model-value="showModal"-->
-<!--    transition-show="slide-up"-->
-<!--    transition-hide="slide-down"-->
-<!--    @hide="emit('hideModal',false)"-->
-<!--    class="modal_wrap"-->
-<!--  >-->
-<!--    <q-card class=" text-white modal_wrap bg_modal" >-->
-<!--      <q-bar class="bg-white ">-->
-<!--        <q-space/>-->
-<!--        <q-btn dense flat icon="close" v-close-popup color="black"/>-->
-<!--      </q-bar>-->
-<!--      <q-card-section class="text-black modal_title text-center">-->
-<!--        Здравствуйте! Хотите мы перезвоним Вам за 25 секунд и ответим на интересующие вопросы?-->
-<!--      </q-card-section>-->
-<!--    <q-card-section>-->
-<!--      <q-form-->
-<!--        class="q-gutter-md flex column items-center"-->
-<!--      >-->
-<!--        <q-input-->
-<!--          v-model="form_name"-->
-<!--          label="Ваше имя"-->
-<!--          hint="Ваше имя"-->
-<!--          :rules="[ (val,rules) => val.length >= 3 || 'Минимальное количество 3 знака!!', (val,rules) => regexpName.test(form_name) || 'Ввод только кириллица']"-->
-<!--          lazy-rules-->
-<!--          style=" width: 70%"-->
-<!--        />-->
-<!--        <q-input-->
-<!--          label="Ваш телефон"-->
-<!--          mask="+7 (###)###-##-##"-->
-<!--          hint="Ваш телефон"-->
-<!--          v-model="form_phone"-->
-<!--          lazy-rules-->
-<!--          style=" width: 70%"-->
-
-<!--        />-->
-<!--        <div class="accept_policy flex justify-center">-->
-<!--          <div class="">-->
-<!--            <p class="policyModal-text text-center q-pt-sm text-black">-->
-<!--              Отправляя форму, я даю свое согласие на обработку-->
-<!--              <br>-->
-<!--              <span style="text-decoration: underline; cursor: pointer ; color: blue"-->
-<!--                    @click="check_toggle = !check_toggle">-->
-<!--          персональных данных-->
-<!--                <q-checkbox v-model="checkBox" />-->
-<!--        </span>-->
-<!--            </p>-->
-<!--            <modal_policy-->
-<!--              :check-toggle="check_toggle"-->
-<!--            />-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div>-->
-<!--          <q-btn label="Отправить" type="submit" color="primary"/>-->
-<!--        </div>-->
-<!--      </q-form>-->
-<!--    </q-card-section>-->
-<!--    </q-card>-->
-<!--  </q-dialog>-->
 </template>
 
 <script setup>
@@ -100,11 +40,10 @@ let count
 
 /* ---------------- Отправка формы c окна выхода ----------------------------*/
 const getLastId = async ()=>{
-  let next_id = await axios.get('http://stm/getinfo.php')
-  let id = next_id.data
-  lastId = id.split(' ')[1]
-  count = lastId++
-  console.log(lastId)
+  let next_id = await axios.get('https://sale.ismos.isp.sprint.1t.ru/assets/getInfo.php')
+  let id = await next_id.data
+  lastId = await id.split('}')
+  count = lastId.length-1
 }
 const sendFormToCall = async (data) => {
   try {
@@ -120,7 +59,7 @@ const sendFormToCall = async (data) => {
       phone: data.phone.value,
     })
 
-    let res = await axios.post("http://stm/telegramRequest.php", result)
+    let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", result)
     if(res.status === 200){
       document.cookie = "Call=true ; path=/ ; max-age=86400"
       let seconds = 3

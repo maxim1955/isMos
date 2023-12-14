@@ -9,11 +9,15 @@
       @hide="showMap = false"
     />
     <modal-recall
+      :quit_modal="false"
+      :order="true"
+      :recall="false"
       :show-modal="showRecallModal"
       @reCallback="sendFormToOrder"
       @hide="showRecallModal=false"
       class="text-center"
       style="margin: 0 auto;"
+      :background="false"
     >
       <template #titleModal>
         <h2 class="modalReCall_title text-center">
@@ -26,21 +30,11 @@
               </span>
       </template>
     </modal-recall>
+
     <div class="blue_bg q-pt-lg">
       <section class="q-pt-lg  flex justify-between wrapper">
         <q-img src="~src/assets/icon/logo.svg" style="max-height: 50px; max-width: 190px;" loading="lazy"
                class="logo_is"/>
-        <div style="cursor: pointer">
-          <a href="https://yandex.ru/maps/org/inzhenernaya_sluzhba/220131617799/?ll=37.704566%2C55.809019&z=16"
-             target="_blank"
-          >
-            <q-img src="~src/assets/icon/yarating48.png"
-                   style="max-height: 50px; max-width: 150px; width: 50vw;  border-radius: 4px "
-                   loading="lazy"
-                   class="yandex-rating"
-            />
-          </a>
-        </div>
       </section>
       <section class="is_info">
         <div class="wrapper">
@@ -49,7 +43,7 @@
               <h1 style=" font-size: 48px; line-height: 52.8px">Официальная поверка водосчётчиков в Москве и МО</h1>
             </div>
             <div class="textRegular">
-              <ul>
+              <ul style="padding-left: 15px">
                 <li style="font-size: 18px" class="text-white textRegular q-pb-sm text-left">Госаккредитация <span> <a
                     target="_blank"
                     class="text-white"
@@ -60,7 +54,7 @@
                 </li>
               </ul>
             </div>
-            <p style="font-size: 30px; max-width: 420px" class="text-white rubikLight">
+            <p style="font-size: 30px" class="text-white rubikLight">
               При заказе через сайт <br>
               цена - <span style="color: #ffff00">500 рублей</span> за 1 прибор
             </p>
@@ -84,16 +78,16 @@
         <re-call @sendFormToOrder="sendFormToOrder"/>
       </section>
       <section class="q-pt-lg">
-        <div class="plus_company bg_blue wrapper flex justify-between">
+        <div class="plus_company bg_blue wrapper flex justify-around">
           <div class="official_item flex">
-            <q-img src="src/assets/icon/official.webp" width="70px" height="70px" class="q-px-lg" loading="lazy"/>
+            <q-img src="~src/assets/icon/official.webp" width="70px" height="70px" class="q-px-lg" loading="lazy"/>
             <div class="item_text flex column q-pl-lg">
               <p class="item_title textBold" style="font-size: 24px;">Официально</p>
               <p class="textRegular ">ГОС Аккредитация, показания передаются во ФГИС "АРШИН"</p>
             </div>
           </div>
           <div class="item_fast flex q-pl-lg">
-            <q-img src="src/assets/icon/official.webp" width="70px" height="70px" class="q-px-lg" loading="lazy"/>
+            <q-img src="~src/assets/icon/official.webp" width="70px" height="70px" class="q-px-lg" loading="lazy"/>
             <div class="item_text flex column q-pl-lg">
               <p class="item_title textBold" style="font-size: 24px;">Быстро</p>
               <p class="textRegular">Выезд в течение 24 часов. Оперативная работа инженера-метролога </p>
@@ -101,7 +95,7 @@
           </div>
           <div class="item_Available flex q-pl-lg">
             <q-img
-              src="src/assets/icon/official.webp"
+              src="~src/assets/icon/official.webp"
                    width="70px"
                    height="70px"
                    class="q-px-lg"
@@ -115,13 +109,10 @@
       </section>
       <section class="q-pt-lg bg-white">
         <div class="wrapper">
-          <h2 class=" textBold pages_title" style="font-size: 30px;">Осуществляем поверку счетчиков воды во всех округах
-            Москвы</h2>
-          <div class="flex justify-center items-center content-center  wrap pages_wrap">
-            <div class="q-pb-lg flex justify-center wrap pages_item"
-                 v-for="dist of districtMoscow"
-                 style=" width: 16.6%">
-              <q-btn class="dist_btn rubikLight " style="width: 100%; max-width: 150px">{{ dist.name }}</q-btn>
+          <h2 class=" textBold pages_title" style="font-size: 30px;">Осуществляем поверку счетчиков воды во всех округах Москвы</h2>
+          <div class="pages_wrap">
+            <div class="pages_item flex justify-center" >
+              <q-btn v-for="dist of districtMoscow" class="dist_btn rubikLight " style="width: 100%; max-width: 150px">{{ dist.name }}</q-btn>
             </div>
           </div>
           <h4 class="textBold" style="font-size: 20px;">Так же работаем в городах Московской области: Балашиха, Люберцы,
@@ -156,7 +147,7 @@
 
 <script setup>
 import {Countdown} from 'vue3-flip-countdown'
-import ReCall from "components/reCall.vue";
+import ReCall from "components/reOrder.vue";
 import Modal_contactMap from "components/modal_contactMap.vue";
 import {ref} from "vue";
 import ModalRecall from "components/modalRecall.vue";
@@ -198,7 +189,9 @@ const showMap = ref(false);
 const labelForTimer= {
   days: 'Дней',hours: 'Часов',minutes: 'Минут',seconds: 'Секунд'
 }
-const nextdate = `${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getUTCDay()+6}`
+
+const nextdate = ref(`${new Date().getFullYear()}-${new Date().getMonth()+1}-${new Date().getDate()+2}`)
+
 
 
 /*----------------------------------------- Функция получения последней заявки  --------------------------------------*/
@@ -212,9 +205,10 @@ const getLastId = async ()=>{
   console.log(count)
 }
 
-/*  ------------------------------------- Функция отправки завяки на ПОВЕРКУ ----------------------------------------*/
+/*  ------------------------------------- Функция отправки заявки на ПОВЕРКУ ----------------------------------------*/
 const sendFormToOrder = async (data) => {
   try {
+    console.log(data)
     $q.loading.show({
       message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
       html: true
@@ -223,10 +217,9 @@ const sendFormToOrder = async (data) => {
       let result = JSON.stringify({
         title: 'Заявка на поверку!',
         id: count,
-        name: data.name.value,
-        phone: data.phone.value,
+        name: data.name,
+        phone: data.phone,
       })
-    getLastId()
       let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", result)
     if(res.status === 200){
       console.log('OK')

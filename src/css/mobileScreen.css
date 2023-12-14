@@ -1,21 +1,22 @@
 @font-face {
-  font-family: "RubikLight";
-  src:
-    url("src/assets/fonts/Rubik-Light.ttf") format("opentype");
+    font-family: "RubikLight";
+    src: url("src/assets/fonts/Rubik-Light.ttf") format("opentype");
 
 }
+
 @font-face {
-  font-family: "RubikBold";
-  src:
-    url("src/assets/fonts/Rubik-Bold.ttf") format("opentype");
+    font-family: "RubikBold";
+    src: url("src/assets/fonts/Rubik-Bold.ttf") format("opentype");
 
 }
-.rubikLight{
-  font-family: 'RubikLight', serif!important;
-  font-weight: 700!important;
+
+.rubikLight {
+    font-family: 'RubikLight', serif !important;
+    font-weight: 700 !important;
 }
-.rubikBold{
-  font-family: 'RubikBold', serif!important;
+
+.rubikBold {
+    font-family: 'RubikBold', serif !important;
 }
 
 .modalBtn {
@@ -26,10 +27,19 @@
     background: rgb(242, 61, 48) !important;
     color: white
 }
-.q-dialog__inner--minimized > div{
-  max-width: 100% !important;
-  background: rgb(252, 252, 252) !important;
+
+.q-dialog__inner--minimized > div {
+    max-width: 100% !important;
 }
+
+.pages_item {
+    max-width: 80%;
+    margin: 0 auto;
+    gap: 10px;
+
+
+}
+
 @media (max-width: 1240px) {
     .bg-meter {
         background: none !important;
@@ -47,6 +57,9 @@
 }
 
 @media (max-width: 650px) {
+    .page-container{
+        padding-top: 9%!important;
+    }
     .adapt_screen {
         flex-direction: column;
         gap: 20px;
@@ -54,7 +67,7 @@
 
     .recall_input {
         flex-direction: column;
-      gap: 15px;
+        gap: 15px;
     }
 
     .recall_number {
@@ -108,8 +121,10 @@
     }
 
     .header_wrap {
-        justify-content: center !important;
+        justify-content: center;
+        flex-direction: column!important;
         align-items: center !important;
+        align-items: center;
     }
 
     .text_pol > h2 {
@@ -124,7 +139,7 @@
     .modalReCall_title {
         font-size: 30px !important;
         text-align: center !important;
-      font-family: 'Roboto Light';
+        font-family: 'Roboto Light';
     }
 
     .modalCall_wrap {
@@ -137,4 +152,15 @@
         padding-top: 10px;
     }
 
+    .item_text {
+        text-align: center;
+        width: 100%;
+        padding: 0;
+    }
+
+}
+@media (max-width: 450px) {
+    .page-container{
+        padding-top: 14%!important;
+    }
 }

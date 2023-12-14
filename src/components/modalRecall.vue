@@ -1,14 +1,17 @@
 <template>
   <q-dialog
       :model-value="showModal"
+      :position="position"
+      :persistent="persistent"
   >
-  <q-card class="column q-px-md modal_wrap">
+  <q-card class="column q-px-md modal_wrap" :class="{'bg_recall':recall, 'bg_order':order , 'quit_mod':quit_modal}">
+    <slot name="closeBTN"></slot>
       <slot name="titleModal" class="modalReCall_title q-mx-xl"></slot>
       <q-card-section>
-        <div class="wrapper">
-          <div class="flex items-center q-pt-lg modalCall_wrap justify-center">
+        <div class="wrapper ">
+          <div class="flex items-center q-pt-lg modalCall_wrap justify-center ">
             <div class="recall_input flex">
-              <form @submit="sendFormToCall" class="recall_input flex  "  >
+              <form @submit="sendFormToCall" class="recall_input flex "  >
                 <q-input
                   type="text"
                   class="q-pr-sm"
@@ -62,12 +65,28 @@ import Modal_policy from "components/modal_policy.vue";
 import axios from "axios";
 import {useQuasar} from "quasar";
 const $q = useQuasar()
-
+let recall = ref(true)
 
 const props = defineProps({
   showModal: {
     type: Boolean,
     required: true
+  },
+  position:{
+    type:String,
+    required:false
+  },
+  order:{
+    type:Boolean,
+  },
+  recall:{
+    type: Boolean,
+  },
+  quit_modal:{
+    type:Boolean,
+  },
+  persistent:{
+    type:Boolean,
   }
 })
 let check_toggle = ref(false);
@@ -77,6 +96,8 @@ const info = {
   name: form_name,
   phone: form_phone,
 };
+
+
 
 const regexpName = /^[?!,.а-яА-ЯёЁ\s]/;
 
@@ -109,4 +130,15 @@ const sendFormToCall =  async (data) => {
   }
 }
 </script>
+<style>
+.bg_recall{
+
+}
+.bg_order{
+
+}
+.quit_mod{
+
+}
+</style>
 

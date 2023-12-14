@@ -58,9 +58,6 @@
     </div>
   </div>
 </template>
-
-
-
 <script setup>
 import {ref} from "vue";
 import Modal_policy from "components/modal_policy.vue";
@@ -69,14 +66,13 @@ const emit = defineEmits(['sendFormToOrder'])
 const check_toggle = ref(false);
 const form_phone = ref("");
 const form_name = ref("");
-const info ={
- title: 'Заказ на поверку',
-  id: 1,
-  name: form_name,
-  phone: form_phone,
-};
 const sendToOrder= ()=>{
-  emit('sendFormToOrder',info);
+  emit('sendFormToOrder', {
+    title: 'Заказ на поверку',
+    id: 1,
+    name: form_name.value,
+    phone: form_phone.value,
+  });
   form_phone.value = '';
   form_name.value = '';
 }

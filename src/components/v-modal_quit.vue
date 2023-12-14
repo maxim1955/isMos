@@ -1,11 +1,26 @@
 <template>
   <div class="modal_wrap">
-    <modal-recall :show-modal="showModal" @reCallback="sendFormToCall" @hide="emit('hideModal',false)" >
+    <modal-recall
+        :persistent="true"
+        :quit_modal="true"
+        :order="false"
+        :recall="false"
+        :position="position"
+        :show-modal="showModal"
+        @reCallback="sendFormToCall"
+        @hide="emit('hideModal',false)">
       <template #titleModal>
-        <p class="text-center modal_title">Здравствуйте! Хотите мы перезвоним Вам за 25 секунд и ответим на интересующие вопросы?</p>
+        <p class="text-center modal_title">Здравствуйте! Хотите мы перезвоним Вам за 25 секунд и ответим на интересующие
+          вопросы?</p>
       </template>
       <template #btn>
         <span class="bg-red-6">Заказать звонок</span>
+      </template>
+      <template #closeBTN>
+        <q-card-actions align="right" class="bg-white text-red">
+          <q-btn flat label="X" v-close-popup/>
+        </q-card-actions>
+
       </template>
     </modal-recall>
   </div>
@@ -17,10 +32,15 @@ import Modal_policy from "components/modal_policy.vue";
 import ModalRecall from "components/modalRecall.vue";
 import axios from "axios";
 import {useQuasar} from "quasar";
+
 const props = defineProps({
-  showModal:{
+  showModal: {
     type: Boolean,
-    required:true,
+    required: true,
+  },
+  position: {
+    type: String,
+    required: false
   }
 })
 const checkBox = ref(false)
@@ -31,19 +51,19 @@ let check_toggle = ref(false);
 const openPolicy = ref(false)
 const showReCallModal = ref(false)
 
-/* ----------------------------------- Модальное оккно при уходе со страницы  ----------------------------------------*/
-const maximizedToggle =ref(true)
+/* ----------------------------------- Модальное окно при уходе со страницы  ----------------------------------------*/
+const maximizedToggle = ref(true)
 const dialog = ref(false)
 const regexpName = /^[?!,.а-яА-ЯёЁ\s]/;
 let lastId;
 let count
 
 /* ---------------- Отправка формы c окна выхода ----------------------------*/
-const getLastId = async ()=>{
+const getLastId = async () => {
   let next_id = await axios.get('https://sale.ismos.isp.sprint.1t.ru/assets/getInfo.php')
   let id = await next_id.data
   lastId = await id.split('}')
-  count = lastId.length-1
+  count = lastId.length - 1
 }
 const sendFormToCall = async (data) => {
   try {
@@ -60,11 +80,11 @@ const sendFormToCall = async (data) => {
     })
 
     let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", result)
-    if(res.status === 200){
+    if (res.status === 200) {
+      emit('hideModal', false)
       document.cookie = "Call=true ; path=/ ; max-age=86400"
       let seconds = 3
       $q.loading.hide()
-      showModal.value = false
       const dialog = $q.dialog({
         title: 'Alert',
         message: `Ваша заявка принята, ожидайте звонка! `,
@@ -72,8 +92,8 @@ const sendFormToCall = async (data) => {
       })
       const timer = setInterval(() => {
         seconds--
-        if (seconds > 0) {}
-        else {
+        if (seconds > 0) {
+        } else {
           clearInterval(timer)
           dialog.hide()
         }
@@ -89,60 +109,63 @@ const sendFormToCall = async (data) => {
 
 <style scoped>
 .exitBlock {
-  display:none;
-  position:fixed;
-  left:0;
-  top:0;
-  width:100%;
-  height:100%;
-  z-index:100000;
+  display: none;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100000;
 }
 
 .exitBlock .fon {
   background: #F6FCFF;
-  opacity:.8;
-  position:fixed;
-  width:100%;
-  height:100%;
+  opacity: .8;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 .exitBlock .modalText {
   box-sizing: border-box;
-  padding:20px 40px;
+  padding: 20px 40px;
   border: 2px solid #AEAEAE;
   background: #F6FCFF;
-  position:fixed;
-  top:80px;
-  left:50%;
-  margin-left:-30%;
-  width:60%;
-  box-shadow: 0 4px 10px 2px rgba(0,0,0,0.5);
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  margin-left: -30%;
+  width: 60%;
+  box-shadow: 0 4px 10px 2px rgba(0, 0, 0, 0.5);
 }
 
 .closeBlock {
-  cursor:pointer;
+  cursor: pointer;
   position: fixed;
-  line-height:60px;
-  font-size:82px;
+  line-height: 60px;
+  font-size: 82px;
   transform: rotate(45deg);
-  text-align:center;
-  top:20px;
-  right:30px;
+  text-align: center;
+  top: 20px;
+  right: 30px;
   color: #337AB7;
 }
 
 .closeBlock:hover {
   color: #000;
 }
-.bg_modal{
-  background: url("src/assets/icon/bg_modal.jpg")!important;
+
+.bg_modal {
+  background: url("src/assets/icon/bg_modal.jpg") !important;
   background-size: contain !important;
 }
-.modal_wrap{
-  width: 100px!important;
+
+.modal_wrap {
+  width: 100px !important;
   padding: 0 10px;
 }
-.modal_title{
+
+.modal_title {
   font-size: 20px;
   max-width: 55%;
   margin: 0 auto;

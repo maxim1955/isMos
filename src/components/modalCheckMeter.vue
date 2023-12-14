@@ -11,15 +11,18 @@
           указав заводской номер в поле поиска</p>
         <div class="flex">
           <div class="">
-            <q-input
-                filled
-                label="Введите заводской номер"
-                v-model="meterInfo"
-            >
-              <template v-slot:append>
-                <q-icon name="search"/>
-              </template>
-            </q-input>
+            <form action="php/getCheckFGIS.php" @submit="updateMeterInfo(meterInfo)">
+              <q-input
+                  filled
+                  label="Введите заводской номер"
+                  v-model="meterInfo"
+                  name="id"
+              >
+                <template v-slot:append>
+                  <q-icon name="search"/>
+                </template>
+              </q-input>
+            </form>
           </div>
           <div class="sendResult">
             <q-btn
@@ -30,7 +33,6 @@
             />
           </div>
         </div>
-
         <div class="result">
           <p class="textBold text q-pt-md" style="font-size: 16px;">Проведенные поверки:</p>
           <q-list separator>
@@ -66,6 +68,7 @@ import axios from "axios";
 import {useQuasar, QSpinnerFacebook, QSpinnerGears} from "quasar";
 import {onBeforeUnmount} from 'vue'
 
+
 const $q = useQuasar()
 const props = defineProps({
   showModal: {
@@ -73,15 +76,14 @@ const props = defineProps({
   },
 })
 const meterInfo = ref('')
-
-
 const updateMeterInfo = async (e) => {
   try {
     $q.loading.show({
       message: 'Запрос по вашему счетчику в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
       html: true
     })
-    let res = await axios.get(`https://fgis.gost.ru/fundmetrology/cm/xcdb/vri/select?fq=verification_year:2022&fq=mi.number:*${e}*&q=*&fl=vri_id,org_title,mi.mitnumber,mi.mititle,mi.mitype,mi.modification,mi.number,verification_date,valid_date,applicability,result_docnum,sticker_num&sort=verification_date+desc,org_title+asc&rows=10&start=0`, {})
+    let url = `https://sale.ismos.isp.sprint.1t.ru/assets/getCheckFGIS.php?id=${meterInfo.value}`
+    let res = await axios.post(url, {"id":`${meterInfo.value}`})
     resultMeter.value = res.data.response.docs
     if (res.status === 200) {
       $q.loading.hide()
@@ -91,19 +93,19 @@ const updateMeterInfo = async (e) => {
   } catch (e) {
     console.log(e)
   }
-
 }
 const resultMeter = ref([])
 const emit = defineEmits(['changeModal'])
 </script>
 <style scoped>
-.btn_close{
+.btn_close {
   border: 2px solid black;
   color: black;
   background: white;
   border-radius: 10px;
 }
-.btn_close:hover{
+
+.btn_close:hover {
   color: white;
   background: #000;
 }

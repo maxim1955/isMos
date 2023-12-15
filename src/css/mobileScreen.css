@@ -1,10 +1,12 @@
 @font-face {
+    font-display: swap;
     font-family: "RubikLight";
     src: url("src/assets/fonts/Rubik-Light.ttf") format("opentype");
 
 }
 
 @font-face {
+    font-display: swap;
     font-family: "RubikBold";
     src: url("src/assets/fonts/Rubik-Bold.ttf") format("opentype");
 

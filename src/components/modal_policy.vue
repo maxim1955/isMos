@@ -1,5 +1,5 @@
 <template>
-  <q-dialog :model-value="checkToggle" @hide="emit('close_policy',false)">
+  <q-dialog :model-value="checkToggle" @hide="emit('close_policy',false)" persistent>
     <q-card style="min-width:80%">
       <q-card-section>
         <div class="text-h2 policy-title">Политика конфиденциальности</div>

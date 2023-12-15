@@ -1,5 +1,5 @@
 <template>
-  <div class="svg_yandex ">
+  <div class="svg_yandex flex-end">
     <div class="flex items-center no-wrap" style="max-width: fit-content">
       <div class="">
         <iframe src="https://yandex.ru/sprav/widget/rating-badge/220131617799?type=rating" width="150" height="50" frameborder="0" style="border-radius: 10px"></iframe>

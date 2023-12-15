@@ -17,10 +17,8 @@
     "flipdown": "^0.3.2",
     "gem": "^2.4.3",
     "install": "^0.13.0",
-    "jquery": "^3.7.1",
     "pinia": "^2.0.11",
     "quasar": "^2.6.0",
-    "travis": "^0.1.1",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0",
     "vue3-flip-countdown": "^0.1.6"

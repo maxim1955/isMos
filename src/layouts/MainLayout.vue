@@ -19,7 +19,7 @@
       <span class="bg-red-6">Заказать звонок</span>
     </template>
   </modal-recall>
-  <modal_policy :check-toggle="openPolicy"/>
+  <modal_policy :check-toggle="openPolicy" @close_policy="openPolicy=false"/>
   <review_modal :open-modal="openReviews" @hide="openReviews=false"/>
   <q-layout view="hHh lpR fff" @mousemove="checkCoordinates($event)">
     <q-header elevated class=" bg-white" height-hint="100">
@@ -77,13 +77,13 @@
           <p class="text-white textBold">Мы в социальных сетях</p>
           <div class="footer_links">
             <a href="https://dzen.ru/ismos" class="">
-              <q-img src="~src/assets/icon/dzen.webp" width="40px" height="40px" class="q-pr-md"/>
+              <q-img src="~src/assets/icon/dzen.webp" width="40px" height="40px" class="q-pr-md" loading="lazy"/>
             </a>
             <a href="https://ok.ru/inzhenernayaslujba" class="q-pl-md">
-              <q-img src="~src/assets/icon/ok.webp" width="40px" height="40px" class="q-pr-md"/>
+              <q-img src="~src/assets/icon/ok.webp" width="40px" height="40px" class="q-pr-md" loading="lazy"/>
             </a>
             <a href="https://vk.com/is_mos" class="q-pl-md">
-              <q-img src="~src/assets/icon/vk.webp" width="40px" height="40px" class=""/>
+              <q-img src="~src/assets/icon/vk.webp" width="40px" height="40px"  loading="lazy"/>
             </a>
           </div>
         </div>
@@ -96,7 +96,6 @@
 import {defineComponent, ref} from 'vue'
 import ModalRecall from "components/modalRecall.vue";
 import Modal_policy from "components/modal_policy.vue";
-import instance from "app/server/instance";
 import axios from "axios";
 import {useQuasar} from "quasar";
 import VModal_quit from "components/v-modal_quit.vue";
@@ -138,7 +137,7 @@ const sendFormToCall = async (data) => {
 
     let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", result)
     if (res.status === 200) {
-      document.cookie = "Call=true ; path=/ ; max-age=86400"
+      document.cookie = "Call=true ; path=/index.html ; max-age=86400"
       let seconds = 3
       $q.loading.hide()
       showReCallModal.value = false
@@ -181,6 +180,7 @@ const quitWindow = (val) => {
     console.log('ДОЛЖНА ОТКРЫТЬСЯ МОДАЛКА')
     quitModal.value = true
     openExitModal.value = true
+    document.cookie = "Call=true ; path=/index.html  ; max-age=86400"
   } else
     console.log('КУКИ ЕСТЬ!!!!')
   closeQuitModal()
@@ -192,11 +192,13 @@ let closeQuitModal = () => {
 <style>
 
 @font-face {
+  font-display: swap;
   font-family: RubikRegular;
   src: url("assets/fonts/Rubik-Regular.ttf")
 }
 
 @font-face {
+  font-display: swap;
   font-family: RubikBold;
   src: url("assets/fonts/Rubik-Bold.ttf")
 }
@@ -273,7 +275,7 @@ let closeQuitModal = () => {
   height: 46%;
   align-items: center;
   border-radius: 10px;
-  justify-content: end;
+  justify-content: flex-end;
   max-width: 32%;
 }
 

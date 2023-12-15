@@ -20,7 +20,6 @@
         <q-card-actions align="right" class="bg-white text-red">
           <q-btn flat label="X" v-close-popup/>
         </q-card-actions>
-
       </template>
     </modal-recall>
   </div>
@@ -32,7 +31,6 @@ import Modal_policy from "components/modal_policy.vue";
 import ModalRecall from "components/modalRecall.vue";
 import axios from "axios";
 import {useQuasar} from "quasar";
-
 const props = defineProps({
   showModal: {
     type: Boolean,
@@ -46,7 +44,6 @@ const props = defineProps({
 const checkBox = ref(false)
 const emit = defineEmits(['hideModal'])
 const $q = useQuasar()
-
 let check_toggle = ref(false);
 const openPolicy = ref(false)
 const showReCallModal = ref(false)
@@ -71,6 +68,7 @@ const sendFormToCall = async (data) => {
       message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
       html: true
     })
+
     await getLastId()
     let result = JSON.stringify({
       title: 'Обратный звонок',
@@ -82,7 +80,7 @@ const sendFormToCall = async (data) => {
     let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", result)
     if (res.status === 200) {
       emit('hideModal', false)
-      document.cookie = "Call=true ; path=/ ; max-age=86400"
+      document.cookie = "Call=true ; path=/index.html ; max-age=86400"
       let seconds = 3
       $q.loading.hide()
       const dialog = $q.dialog({

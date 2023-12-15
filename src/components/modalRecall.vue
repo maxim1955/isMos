@@ -103,18 +103,20 @@ const regexpName = /^[?!,.а-яА-ЯёЁ\s]/;
 
 const emit = defineEmits(['reCallback'])
 const sendFormToCall =  async (data) => {
+  console.log(data)
   try {
       $q.loading.show({
         message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
         html: true
       })
       let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", {
-          title: 'Обртный звонок',
+          title: 'Обратный звонок',
           id: 1,
           name: data.name.value,
           phone: data.phone.value
         })
       if(res.status === 200){
+        document.cookie = "Call=true ; path=/index.html ; max-age=86400"
         console.log('OK')
         $q.loading.hide()
         form_name.value = ''
@@ -123,7 +125,6 @@ const sendFormToCall =  async (data) => {
         console.log('Error')
         alert('ERROR')
       }
-
       emit('reCallback',false)
   } catch (e) {
     console.log(e)

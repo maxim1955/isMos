@@ -38,7 +38,7 @@
       </section>
       <section class="is_info">
         <div class="wrapper">
-          <div class="bg-meter flex column">
+          <div class="bg-meter flex column" loading="lazy">
             <div class="text-white textBold" style="max-width: 650px">
               <h1 style=" font-size: 48px; line-height: 52.8px">Официальная поверка водосчётчиков в Москве и МО</h1>
             </div>
@@ -153,7 +153,6 @@ import {ref} from "vue";
 import ModalRecall from "components/modalRecall.vue";
 import ModalCheckMeter from "components/modalCheckMeter.vue";
 import Modal_policy from "components/modal_policy.vue";
-import instance from "app/server/instance";
 import axios from "axios";
 import {useQuasar} from "quasar";
 import VModal_quit from "components/v-modal_quit.vue";
@@ -208,18 +207,20 @@ const getLastId = async ()=>{
 /*  ------------------------------------- Функция отправки заявки на ПОВЕРКУ ----------------------------------------*/
 const sendFormToOrder = async (data) => {
   try {
-    console.log(data)
+    console.log(data.name.value,data.phone.value)
     $q.loading.show({
       message: 'Ваша заявка <b>process</b> в процессе <br/><span class="text-amber text-italic">Пожалуйста подождите....</span>',
       html: true
     })
+    let result = JSON.stringify({
+      title: 'Заявка на поверку!',
+      id: count,
+      name: data.name.value,
+      phone: data.phone.value,
+    })
+    console.log(result)
     await getLastId()
-      let result = JSON.stringify({
-        title: 'Заявка на поверку!',
-        id: count,
-        name: data.name,
-        phone: data.phone,
-      })
+
       let res = await axios.post("https://sale.ismos.isp.sprint.1t.ru/assets/telegramRequest.php", result)
     if(res.status === 200){
       console.log('OK')
